@@ -14,14 +14,26 @@ import java.util.Arrays;
 public class Main {
     public static void main(String[] args) {
         int[] myArray = {3,5,6,7,8,9,2,3,5,6,12,56,84,110, 0, 0};
-
+        int rows = 4;
+        int cols = 4;
         int result = countEvens(myArray);
         int diff = difference(myArray);
         boolean doubleZero = zeroElements(myArray);
+        int[][] matrix = generateSpiralArray(rows, cols);
 
         System.out.printf("Even count is %d of %d \n",result, myArray.length);
         System.out.printf("Разница между минимальным и максимальным элементом: %d \n", diff);
         System.out.printf("Два нулевых значения? %b \n", doubleZero);
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (matrix[i][j] < 10) {
+                    System.out.print("0" + matrix[i][j] + " ");
+                }
+                else System.out.print(matrix[i][j] + " ");
+            }
+            System.out.println();
+        }
     }
 
     /**
@@ -75,5 +87,46 @@ public class Main {
         }
 
         return false;
+    }
+
+    /**
+     *
+     * @param rows Кол-во строк матрицы.
+     * @param cols Кол-во столбцов матрицы.
+     * @return Матрица размером rows на cols закрученная по часовой стрелке.
+     */
+    public static int[][] generateSpiralArray(int rows, int cols) {
+        int[][] result = new int[rows][cols];
+
+        int num = 1;
+        int left = 0, right = cols - 1, top = 0, bottom = rows - 1;
+
+        while (left <= right && top <= bottom) {
+            for (int i = left; i <= right; i++) {
+                result[top][i] = num++;
+            }
+            top++;
+
+            for (int i = top; i <= bottom; i++) {
+                result[i][right] = num++;
+            }
+            right--;
+
+            if (top <= bottom) {
+                for (int i = right; i >= left; i--) {
+                    result[bottom][i] = num++;
+                }
+                bottom--;
+            }
+
+            if (left <= right) {
+                for (int i = bottom; i >= top; i--) {
+                    result[i][left] = num++;
+                }
+                left++;
+            }
+        }
+
+        return result;
     }
 }
